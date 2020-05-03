@@ -1,4 +1,7 @@
 import { GraphQLResolveInfo } from "graphql";
+import gql from "graphql-tag";
+import * as ApolloReactCommon from "@apollo/client";
+import * as ApolloReactHooks from "@apollo/client";
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
@@ -189,3 +192,117 @@ export type Resolvers<ContextType = any> = {
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
+
+export type TodoQueryVariables = {
+  todoId: Scalars["ID"];
+};
+
+export type TodoQuery = {
+  Todo?: Maybe<Pick<TodoMvc, "description" | "completed">>;
+};
+
+export type IndexQueryVariables = {};
+
+export type IndexQuery = { allTodos: Array<Pick<TodoMvc, "todoId">> };
+
+export const TodoDocument = gql`
+  query Todo($todoId: ID!) {
+    Todo(todoId: $todoId) {
+      description
+      completed
+    }
+  }
+`;
+
+/**
+ * __useTodoQuery__
+ *
+ * To run a query within a React component, call `useTodoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTodoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTodoQuery({
+ *   variables: {
+ *      todoId: // value for 'todoId'
+ *   },
+ * });
+ */
+export function useTodoQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<TodoQuery, TodoQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<TodoQuery, TodoQueryVariables>(
+    TodoDocument,
+    baseOptions
+  );
+}
+export function useTodoLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    TodoQuery,
+    TodoQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<TodoQuery, TodoQueryVariables>(
+    TodoDocument,
+    baseOptions
+  );
+}
+export type TodoQueryHookResult = ReturnType<typeof useTodoQuery>;
+export type TodoLazyQueryHookResult = ReturnType<typeof useTodoLazyQuery>;
+export type TodoQueryResult = ApolloReactCommon.QueryResult<
+  TodoQuery,
+  TodoQueryVariables
+>;
+export const IndexDocument = gql`
+  query Index {
+    allTodos {
+      todoId
+    }
+  }
+`;
+
+/**
+ * __useIndexQuery__
+ *
+ * To run a query within a React component, call `useIndexQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIndexQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIndexQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIndexQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    IndexQuery,
+    IndexQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<IndexQuery, IndexQueryVariables>(
+    IndexDocument,
+    baseOptions
+  );
+}
+export function useIndexLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    IndexQuery,
+    IndexQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<IndexQuery, IndexQueryVariables>(
+    IndexDocument,
+    baseOptions
+  );
+}
+export type IndexQueryHookResult = ReturnType<typeof useIndexQuery>;
+export type IndexLazyQueryHookResult = ReturnType<typeof useIndexLazyQuery>;
+export type IndexQueryResult = ApolloReactCommon.QueryResult<
+  IndexQuery,
+  IndexQueryVariables
+>;

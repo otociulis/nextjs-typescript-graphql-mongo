@@ -6,6 +6,11 @@
       completed: false,
       description: "foo",
     },
+    {
+      todoId: "2",
+      completed: false,
+      description: "bar",
+    },
   ];
 
   const resolvers: Resolvers = {

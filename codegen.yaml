@@ -6,11 +6,19 @@ schema:
   - ./src/graphql/schema.graphql
 generates:
   ./src/graphql/types.tsx:
+    documents: # Provide list of files that needs to be checked for queries
+      - ./pages/**/*.ts*
+      - ./components/**/*.ts*
     plugins:
       - typescript
       - typescript-resolvers
+      - typescript-operations
+      - typescript-react-apollo
     config:
       withHooks: true # We will be using React Hooks so we disable React Components
       withHOC: false
       withComponent: false
       skipTypename: true
+      # We need to override the Apollo imports since the generator uses older @apollo/react-hooks package
+      apolloReactCommonImportFrom: "@apollo/client" 
+      apolloReactHooksImportFrom: "@apollo/client"
