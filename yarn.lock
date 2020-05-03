@@ -1080,7 +1080,19 @@
     tslib "~1.11.1"
     upper-case "2.0.1"
 
-"@graphql-codegen/typescript@^1.13.5":
+"@graphql-codegen/typescript-resolvers@^1.13.5":
+  version "1.13.5"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-resolvers/-/typescript-resolvers-1.13.5.tgz#7ea24fc00060b50dc0c1fff68cd60fcf17f45a2f"
+  integrity sha512-wdXtE7ZIdQtFnF2JA9ZLpcSNsd8a2riUenhfwLro+cmJhm/WGDsxZGubGo9RfA8mFWRLxtEqQz1OKudJNkZKRw==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "1.13.5"
+    "@graphql-codegen/typescript" "1.13.5"
+    "@graphql-codegen/visitor-plugin-common" "1.13.5"
+    "@graphql-toolkit/common" "~0.10.4"
+    auto-bind "~4.0.0"
+    tslib "~1.11.1"
+
+"@graphql-codegen/typescript@1.13.5", "@graphql-codegen/typescript@^1.13.5":
   version "1.13.5"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript/-/typescript-1.13.5.tgz#c843ad5985410393946c18be1a2b79e80d30ce0e"
   integrity sha512-wa9rF7xFaobxzw79Ok40pkjAS2as7nsgm+bRIwyP07YZSOYoa2TOepvAcT4NdZg5+ocmYWIZDpWwtchRHZoT5A==
@@ -5776,6 +5788,11 @@ prepend-http@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
+
+prettier@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
 
 prisma-json-schema@0.1.3:
   version "0.1.3"

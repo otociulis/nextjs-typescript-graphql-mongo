@@ -1,0 +1,10 @@
+type Query {
+  allTodos: [TodoMVC!]!
+  Todo(todoId: ID!): TodoMVC
+}
+
+type TodoMVC {
+  todoId: ID!
+  completed: Boolean!
+  description: String!
+}

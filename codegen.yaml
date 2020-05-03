@@ -1,0 +1,16 @@
+overwrite: true
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+schema:
+  - ./src/graphql/schema.graphql
+generates:
+  ./src/graphql/types.tsx:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      withHooks: true # We will be using React Hooks so we disable React Components
+      withHOC: false
+      withComponent: false
+      skipTypename: true
