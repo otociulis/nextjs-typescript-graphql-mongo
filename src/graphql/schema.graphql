@@ -3,6 +3,16 @@ type Query {
   Todo(todoId: ID!): TodoMVC
 }
 
+type Mutation {
+  createTodo(description: String!): TodoMVC!
+  updateTodo(todoId: ID!, data: UpdateTodoInput!): TodoMVC
+}
+
+input UpdateTodoInput {
+  description: String
+  completed: Boolean
+}
+
 type TodoMVC {
   todoId: ID!
   completed: Boolean!

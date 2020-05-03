@@ -1,9 +1,9 @@
-  import { Resolvers, TodoMvc } from "./types";
+  import { Resolvers, TodoMvc } from './types';
 
-  const data: TodoMvc[] = [
+  let store: TodoMvc[] = [
     {
       todoId: "1",
-      completed: false,
+      completed: true,
       description: "foo",
     },
     {
@@ -15,10 +15,34 @@
 
   const resolvers: Resolvers = {
     Query: {
-      allTodos: () => data,
-      Todo: (_: any, { todoId }: { todoId: String }) =>
-        data.find((d) => d.todoId === todoId),
+      allTodos: () => store,
+      Todo: (_: any, { todoId }) =>
+      store.find((d) => d.todoId === todoId),
     },
+    Mutation: {
+      createTodo: (_: any, { description }) => {
+        const newTodo: TodoMvc = {
+          todoId: Math.floor(Math.random() * 10000).toString(),
+          description,
+          completed: false
+        }
+
+        store = store.concat(newTodo);
+        return newTodo;
+      },
+      updateTodo: (_: any, { todoId, data }) => {
+        const todo = store.find(d => d.todoId === todoId);
+
+        if (todo) {
+          store = store.filter(d => d.todoId !== todoId).concat({
+            ...todo,
+            ...data
+          });
+        }
+
+        return todo;
+      }
+    }
   };
 
   export default resolvers;
