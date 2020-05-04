@@ -13,8 +13,8 @@ input UpdateTodoInput {
   completed: Boolean
 }
 
-type TodoMVC {
-  todoId: ID!
-  completed: Boolean!
-  description: String!
+type TodoMVC @entity {
+  todoId: ID! @id
+  completed: Boolean! @column
+  description: String! @column
 }

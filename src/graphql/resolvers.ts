@@ -1,48 +1,64 @@
-  import { Resolvers, TodoMvc } from './types';
+import { Resolvers, TodoMvc } from "./types";
+import { connect } from "../dao";
+import { TodoMvcDbObject } from "../dao/types";
+import { ObjectID } from "mongodb";
 
-  let store: TodoMvc[] = [
-    {
-      todoId: "1",
-      completed: true,
-      description: "foo",
-    },
-    {
-      todoId: "2",
-      completed: false,
-      description: "bar",
-    },
-  ];
+const dbPromise = connect();
 
-  const resolvers: Resolvers = {
-    Query: {
-      allTodos: () => store,
-      Todo: (_: any, { todoId }) =>
-      store.find((d) => d.todoId === todoId),
+const getCollection = async () => {
+  const db = await dbPromise;
+  return db.collection<TodoMvcDbObject>("todos");
+};
+
+const fromDbObject = (dbObject: TodoMvcDbObject): TodoMvc => ({
+  todoId: dbObject._id.toHexString(),
+  completed: dbObject.completed,
+  description: dbObject.description,
+});
+
+const resolvers: Resolvers = {
+  Query: {
+    allTodos: async () => {
+      const collection = await getCollection();
+      return await collection.find().map(fromDbObject).toArray();
     },
-    Mutation: {
-      createTodo: (_: any, { description }) => {
-        const newTodo: TodoMvc = {
-          todoId: Math.floor(Math.random() * 10000).toString(),
-          description,
-          completed: false
+    Todo: async (_: any, { todoId }) => {
+      const collection = await getCollection();
+      const dbObject = await collection.findOne({
+        _id: ObjectID.createFromHexString(todoId),
+      });
+      return fromDbObject(dbObject);
+    },
+  },
+  Mutation: {
+    createTodo: async (_: any, { description }) => {
+      const data: Omit<TodoMvcDbObject, "_id"> = {
+        description,
+        completed: false,
+      };
+
+      const collection = await getCollection();
+      const document = await collection.insertOne(data);
+      return fromDbObject({
+        ...data,
+        _id: document.insertedId,
+      });
+    },
+    updateTodo: async (_: any, { todoId, data }) => {
+      const collection = await getCollection();
+      const result = await collection.findOneAndUpdate(
+        {
+          _id: ObjectID.createFromHexString(todoId),
+        },
+        { $set: data },
+        {
+          returnOriginal: false,
         }
+      );
 
-        store = store.concat(newTodo);
-        return newTodo;
-      },
-      updateTodo: (_: any, { todoId, data }) => {
-        const todo = store.find(d => d.todoId === todoId);
+      return fromDbObject(result.value);
+    },
+  },
+};
 
-        if (todo) {
-          store = store.filter(d => d.todoId !== todoId).concat({
-            ...todo,
-            ...data
-          });
-        }
-
-        return todo;
-      }
-    }
-  };
-
-  export default resolvers;
+export default resolvers;

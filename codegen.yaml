@@ -4,7 +4,15 @@ hooks:
     - prettier --write
 schema:
   - ./src/graphql/schema.graphql
+require: # This is very important directive to be able to use attributes
+  - ts-node/register
 generates:
+  ./src/dao/types.ts:    
+    plugins:
+      - typescript
+      - typescript-mongodb
+    config:
+      skipTypename: true
   ./src/graphql/types.tsx:
     documents: # Provide list of files that needs to be checked for queries
       - ./pages/**/*.ts*

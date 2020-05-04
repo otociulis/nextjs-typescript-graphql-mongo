@@ -50,8 +50,19 @@ const Index = () => {
 
   const todoElements = todoIds?.map((id) => <Todo todoId={id} key={id} />);
 
-  return loading ||
+  const body =
+    loading ||
     typeof todoElements === "undefined" ? null : todoElements.length > 0 ? (
+      <>
+        <table>
+          <tbody>{todoElements}</tbody>
+        </table>
+      </>
+    ) : (
+      <div>No ToDos!</div>
+    );
+
+  return (
     <>
       <input
         type="text"
@@ -62,12 +73,8 @@ const Index = () => {
       <button type="button" onClick={onClickAddTodo}>
         Add
       </button>
-      <table>
-        <tbody>{todoElements}</tbody>
-      </table>
+      {body}
     </>
-  ) : (
-    <div>No ToDos!</div>
   );
 };
 

@@ -2,9 +2,10 @@ import { ApolloServer } from "apollo-server-micro";
 import "graphql-import-node";
 import typeDefs from "../../src/graphql/schema.graphql";
 import resolvers from "../../src/graphql/resolvers";
+import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
 
 const apolloServer = new ApolloServer({
-  typeDefs,
+  typeDefs: [DIRECTIVES, typeDefs],
   resolvers,
 });
 
