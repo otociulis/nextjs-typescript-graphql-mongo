@@ -256,6 +256,12 @@ export type IndexQueryVariables = {};
 
 export type IndexQuery = { allTodos: Array<Pick<TodoMvc, "todoId">> };
 
+export type IndexCreateTodoMutationVariables = {
+  description: Scalars["String"];
+};
+
+export type IndexCreateTodoMutation = { createTodo: Pick<TodoMvc, "todoId"> };
+
 export const TodoDocument = gql`
   query Todo($todoId: ID!) {
     Todo(todoId: $todoId) {
@@ -408,4 +414,54 @@ export type IndexLazyQueryHookResult = ReturnType<typeof useIndexLazyQuery>;
 export type IndexQueryResult = ApolloReactCommon.QueryResult<
   IndexQuery,
   IndexQueryVariables
+>;
+export const IndexCreateTodoDocument = gql`
+  mutation IndexCreateTodo($description: String!) {
+    createTodo(description: $description) {
+      todoId
+    }
+  }
+`;
+export type IndexCreateTodoMutationFn = ApolloReactCommon.MutationFunction<
+  IndexCreateTodoMutation,
+  IndexCreateTodoMutationVariables
+>;
+
+/**
+ * __useIndexCreateTodoMutation__
+ *
+ * To run a mutation, you first call `useIndexCreateTodoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIndexCreateTodoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [indexCreateTodoMutation, { data, loading, error }] = useIndexCreateTodoMutation({
+ *   variables: {
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useIndexCreateTodoMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    IndexCreateTodoMutation,
+    IndexCreateTodoMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    IndexCreateTodoMutation,
+    IndexCreateTodoMutationVariables
+  >(IndexCreateTodoDocument, baseOptions);
+}
+export type IndexCreateTodoMutationHookResult = ReturnType<
+  typeof useIndexCreateTodoMutation
+>;
+export type IndexCreateTodoMutationResult = ApolloReactCommon.MutationResult<
+  IndexCreateTodoMutation
+>;
+export type IndexCreateTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  IndexCreateTodoMutation,
+  IndexCreateTodoMutationVariables
 >;

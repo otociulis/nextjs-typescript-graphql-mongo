@@ -1,11 +1,20 @@
-import { useIndexQuery } from "../src/graphql/types";
+import {
+  useIndexQuery,
+  useIndexCreateTodoMutation,
+} from "../src/graphql/types";
 import { gql } from "@apollo/client";
 import Todo from "../components/Todo";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 
 gql`
   query Index {
     allTodos {
+      todoId
+    }
+  }
+
+  mutation IndexCreateTodo($description: String!) {
+    createTodo(description: $description) {
       todoId
     }
   }
@@ -14,24 +23,35 @@ gql`
 const Index = () => {
   const { data, loading } = useIndexQuery();
   const [newTodoDescription, setNewTodoDescription] = useState("");
+  const [todoIds, setTodoIds] = useState<string[]>();
+  const [createTodo] = useIndexCreateTodoMutation();
+
+  const fillTodoIds = (data: string[]) => {
+    setTodoIds(data?.slice().sort((a, b) => a.localeCompare(b)));
+  };
+
+  useEffect(() => {
+    fillTodoIds(data?.allTodos?.map((t) => t.todoId));
+  }, [data?.allTodos]);
 
   const updateTodoDescription = (e: ChangeEvent) => {
     setNewTodoDescription((e.target as HTMLInputElement).value.toString());
   };
 
-  const onClickAddTodo = () => {
-    console.info(newTodoDescription);
+  const onClickAddTodo = async () => {
+    const result = await createTodo({
+      variables: {
+        description: newTodoDescription,
+      },
+    });
+
+    fillTodoIds(todoIds.concat(result.data?.createTodo?.todoId));
   };
 
-  const allTodos = data?.allTodos
-    ?.slice()
-    .sort((a, b) => a.todoId.localeCompare(b.todoId));
+  const todoElements = todoIds?.map((id) => <Todo todoId={id} key={id} />);
 
-  const todoElements = allTodos?.map((t) => (
-    <Todo todoId={t.todoId} key={t.todoId} />
-  ));
-
-  return loading ? null : todoElements.length > 0 ? (
+  return loading ||
+    typeof todoElements === "undefined" ? null : todoElements.length > 0 ? (
     <>
       <input
         type="text"
