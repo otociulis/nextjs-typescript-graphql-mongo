@@ -29,7 +29,7 @@ const Todo = (props: Props) => {
       todoId,
     },
   });
-  const [localLompleted, setLocalCompleted] = useState(false);
+  const [localCompleted, setLocalCompleted] = useState(false);
   const [updateTodo] = useUpdateTodoMutation();
   let content = <td colSpan={2}>Loading ...</td>;
 
@@ -58,7 +58,7 @@ const Todo = (props: Props) => {
         <td>
           <input
             type="checkbox"
-            checked={localLompleted}
+            checked={localCompleted}
             onChange={onToggleCompleted}
           ></input>
         </td>
