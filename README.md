@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project for Medium series Next.js + Typescript + GraphQL + MongoDB = ❤️.
 
-* [Part I — Setuphttps://medium.com/@otociulis/next-js-typescript-graphql-mongodb-%EF%B8%8F-7c342319206b]()
+* [Part I — Setup](https://medium.com/@otociulis/next-js-typescript-graphql-mongodb-%EF%B8%8F-7c342319206b)
 * [Part II — GraphQL integration](https://medium.com/@otociulis/next-js-typescript-graphql-mongodb-%EF%B8%8F-72f46526cda7)
 * [Part III — Mutations and MongoDB integration](https://medium.com/@otociulis/next-js-typescript-graphql-mongodb-%EF%B8%8F-2989bf5edd88)
 
